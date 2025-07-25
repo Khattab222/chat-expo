@@ -3,6 +3,7 @@ import { ButtonProps } from '@/types'
 import { verticalScale } from '@/utils/styling'
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Loading from './Loading'
 
 export default function Button({
   style,
