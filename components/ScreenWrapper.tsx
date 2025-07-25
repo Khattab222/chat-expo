@@ -10,7 +10,7 @@ export default function ScreenWrapper({
   children,
   showPattern = false,
   isModal = false,
-  bgOpacity = 0.1,
+  bgOpacity = 1,
 }: ScreenWrapperProps) {
 
 let paddingTop = Platform.OS === "ios" ?height* 0.06 : 40;
@@ -27,7 +27,7 @@ if (isModal) {
       flex: 1,
       backgroundColor:isModal?colors.white: colors.neutral900,
     }}
-    imageStyle={{opacity: bgOpacity? bgOpacity : 0}}
+    imageStyle={{opacity: showPattern? bgOpacity : 0}}
     source={require("@/assets/images/bgPattern.png")}
     >
       <View
