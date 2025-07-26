@@ -11,7 +11,7 @@ import { useRouter } from 'expo-router'
 export default function Welcome() {
   const router = useRouter()
   return (
-    <ScreenWrapper showPattern={true}>
+    <ScreenWrapper showPattern={true} bgOpacity={0.5}>
       <View style={styles.container}>
       <View style={{alignSelf:"center"}}>
       <Typo  color={colors.white} size={43} fontWeight={"900"} >Bubbly</Typo>
@@ -36,7 +36,7 @@ export default function Welcome() {
       
       
       </View>
-      <Button style={{backgroundColor:colors.white}} onPress={()=>router.push('/(auth)/Login')} >
+      <Button style={{backgroundColor:colors.white}} onPress={()=>router.push('/(auth)/register')} >
       <Typo size={23} fontWeight={"bold"} >Get Started</Typo>
       </Button>
       </View>
