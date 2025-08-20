@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import cors from "cors";
 import http from "http";
 import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRouter.js";
+import { globalResponse } from "./utils/errorHandling.js";
+
 // Load environment variables from .env
 dotenv.config();
 
@@ -19,12 +22,25 @@ app.use(cors())
 app.get("/", (_req, res) => {
 	res.json({ status: "ok", message: "Server is running" });
 })
-const server = http.createServer(app);
+
+app.use("/api/auth",authRoutes)
+
+
+  app.all('*', (req, res, next) => {
+        res.status(404).send("In-valid Routing Plz check url  or  method")
+    })
+
+     app.use(globalResponse)
 
 
 connectDB()
-server.listen(PORT, () => {
-	console.log(`Server listening nnnn on http://localhost:${PORT}`);
+
+
+  app.listen(PORT, () => {
+	console.log(`Server listening on http://localhost:${PORT}`);
 });
+
+
+
 
 export default app;

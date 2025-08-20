@@ -5,20 +5,21 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1",
-  "dev": "nodemon --watch . --ext ts,mjs --exec \"node node-register.mjs\""
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --watch . --ext ts,mjs --exec \"node node-register.mjs\"",
+    "rimraf": "rimraf node_modules package-lock.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
-    "express": "^5.1.0",
+    "express": "4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.2",
-    "socket.io": "^4.8.1"
+    "socket.io": "2.3.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
@@ -28,6 +29,7 @@
     "@types/node": "^24.3.0",
     "@types/socket.io": "^3.0.1",
     "nodemon": "^3.1.10",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   }
