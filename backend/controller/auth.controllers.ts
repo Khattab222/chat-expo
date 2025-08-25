@@ -14,7 +14,8 @@ export const register = async (req:Request,res:Response,next:NextFunction):Promi
 
   const user = new User({email,password,name,avatar:avatar ||""});
   await user.save();
-  return res.status(201).json({success :true ,message:"User registered successfully"});
+     const token = generateToken({user});
+  return res.status(201).json({success :true ,message:"User registered successfully",token});
     } catch (error) {
       console.log("error")
     }

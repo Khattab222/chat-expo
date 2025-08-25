@@ -51,10 +51,7 @@ export type AuthContextProps = {
   user: UserProps | null;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (
-    email: string,
-    password: string,
-    name: string,
-    avatar?: string
+    {email,password,name,avatar}:{email:string,password:string,name:string,avatar?:string}
   ) => Promise<void>;
   signOut: () => Promise<void>;
   updateToken: (token: string) => Promise<void>;
