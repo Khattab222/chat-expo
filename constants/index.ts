@@ -1,4 +1,10 @@
 import { Platform } from "react-native";
 
+// For iOS, make sure to replace this IP with your computer's local IP address
+const LOCAL_IP = "http://192.168.1.7:3000"; // Replace this with your computer's IP address
 
-export const API_URL = Platform.OS === "ios" ? "http://localhost:3000" : "http://10.0.2.2:3000"; 
+export const API_URL = Platform.select({
+    ios: LOCAL_IP,
+    android: "http://10.0.2.2:3000",
+    default: "http://localhost:3000"
+}); 

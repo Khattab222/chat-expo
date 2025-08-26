@@ -1,6 +1,6 @@
 import { AuthContextProps, DecodedTokenProps, UserProps } from "@/types";
 import { useRouter } from "expo-router";
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import { login, register } from "@/services/authServices";
@@ -22,30 +22,38 @@ export const AuthProvider = ({children}:{children:ReactNode})=>{
   const [user, setuser] = useState<UserProps|null>(null)
   const router = useRouter()
  
+useEffect(() => {
+  loadToken()
+}, [])
 
   const loadToken = async ()=>{
     const storedToken = await AsyncStorage.getItem("token");
     if (storedToken) {
       try {
-        const decoded:{user:UserProps,exp:number} = jwtDecode<DecodedTokenProps>(storedToken);
+        const decoded = jwtDecode<DecodedTokenProps>(storedToken);
         if (decoded.exp && decoded.exp  < Date.now() /1000 ) {
           await AsyncStorage.removeItem("token");
           return
         }
+            
+      
         settoken(storedToken)
-        setuser(decoded.user)
+        setuser(decoded)
+        goToHomePage()
       } catch (error) {
         goToWelcomePage();
         console.log("failed to decode token")
       }
+    }else{
+      goToWelcomePage();
     }
   }
 
   const goToHomePage = () =>{
-    
+    setTimeout(() => { router.replace("/(main)/home") }, 1000)
   }
   const goToWelcomePage = () =>{
-
+    setTimeout(() => { router.replace("/(auth)/welcome") }, 1000)
   }
 
 
@@ -54,8 +62,9 @@ export const AuthProvider = ({children}:{children:ReactNode})=>{
     if(newToken){
       settoken(newToken)
       await AsyncStorage.setItem("token",newToken)
-      const decodedToken:{user:UserProps,exp:number} = jwtDecode(newToken)
-      setuser(decodedToken.user)
+              const decodedToken = jwtDecode<DecodedTokenProps>(newToken);
+
+      setuser(decodedToken)
     }
    }
   const signIn = async (email:string,password:string)=>{

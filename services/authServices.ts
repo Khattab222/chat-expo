@@ -8,6 +8,7 @@ interface ServerError {
 
 export const login = async (email: string, password: string): Promise<{ token: string }> => {
   try {
+    console.log({API_URL})
     const response = await axios.post(`${API_URL}/api/auth/login`, {
       email, password
     });
@@ -17,6 +18,7 @@ export const login = async (email: string, password: string): Promise<{ token: s
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError<ServerError>;
       console.error("Login error:", axiosError.response?.data);
+      console.log(error.message)
       
       // Get the error message from the server response, or use a default message
       const errorMessage = axiosError.response?.data?.Error || 
