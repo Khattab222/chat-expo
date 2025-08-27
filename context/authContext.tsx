@@ -35,10 +35,9 @@ useEffect(() => {
           await AsyncStorage.removeItem("token");
           return
         }
-            
-      
         settoken(storedToken)
         setuser(decoded)
+        console.log("ok")
         goToHomePage()
       } catch (error) {
         goToWelcomePage();
@@ -46,6 +45,7 @@ useEffect(() => {
       }
     }else{
       goToWelcomePage();
+      console.log("noooo")
     }
   }
 
