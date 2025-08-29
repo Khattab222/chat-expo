@@ -5,6 +5,7 @@ import http from "http";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRouter.js";
 import { globalResponse } from "./utils/errorHandling.js";
+import { initializeSocket } from "./socket/socket.js";
 
 // Load environment variables from .env
 dotenv.config();
@@ -32,11 +33,13 @@ app.use("/api/auth",authRoutes)
 
      app.use(globalResponse)
 
+const server = http.createServer(app);
 
+initializeSocket(server)
 connectDB()
 
 
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
 	console.log(`Server listening on http://localhost:${PORT}`);
 });
 
