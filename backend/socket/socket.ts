@@ -27,7 +27,7 @@ dotenv.config();
         }
 
         // attach user data to socket 
-        let userData = decoded.user;
+        let userData = decoded;
         socket.data = userData
         socket.data.userId = userData.id
         next();

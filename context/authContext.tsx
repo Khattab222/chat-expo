@@ -4,6 +4,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import { login, register } from "@/services/authServices";
+import { connectSocket, disconnectSocket } from "@/socket/socket";
 
 export const authContext = createContext<AuthContextProps>({
   token: null,
@@ -38,6 +39,8 @@ useEffect(() => {
         settoken(storedToken)
         setuser(decoded)
         console.log("ok")
+      await connectSocket()
+
         goToHomePage()
       } catch (error) {
         goToWelcomePage();
@@ -72,6 +75,7 @@ useEffect(() => {
     const response = await login(email,password)
     if(response.token){
       await updateToken(response.token)
+      await connectSocket()
       router.replace("/(main)/home")
     }
   }
@@ -81,6 +85,8 @@ useEffect(() => {
     const response = await register({email, password, name, avatar})
     if(response.token){
       await updateToken(response.token)
+      await connectSocket()
+
       router.replace("/(main)/home")
     } 
   }
@@ -90,6 +96,7 @@ useEffect(() => {
     setuser(null)
     settoken(null)
     await AsyncStorage.removeItem("token");
+    await disconnectSocket()
     router.replace("/(auth)/welcome")
   }
   
