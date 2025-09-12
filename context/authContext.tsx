@@ -21,36 +21,72 @@ export const AuthProvider = ({children}:{children:ReactNode})=>{
 
   const [token, settoken] = useState<string|null>(null)
   const [user, setuser] = useState<UserProps|null>(null)
+  const [isLayoutMounted, setIsLayoutMounted] = useState(false);
   const router = useRouter()
  
 useEffect(() => {
+  setIsLayoutMounted(true);
   loadToken()
 }, [])
 
-  const loadToken = async ()=>{
+// Then modify your auth state useEffect
+useEffect(() => {
+  // Only navigate if the layout is mounted AND we have auth state
+  if (!isLayoutMounted) return;
+  
+  if (token && user) {
+    console.log("Navigating to home page");
+    router.replace("/(main)/home");
+  } else if (isLayoutMounted) {  // Only navigate to welcome if we're mounted
+    console.log("Navigating to welcome page");
+    router.replace("/(auth)/welcome");
+  }
+}, [token, user, isLayoutMounted]);
+
+const loadToken = async () => {
+  try {
     const storedToken = await AsyncStorage.getItem("token");
+    console.log("Stored token:", storedToken ? "exists" : "none");
+    
     if (storedToken) {
       try {
         const decoded = jwtDecode<DecodedTokenProps>(storedToken);
-        if (decoded.exp && decoded.exp  < Date.now() /1000 ) {
+        console.log("Token expiration:", decoded.exp, "Current time:", Date.now()/1000);
+        
+        if (decoded.exp && decoded.exp < Date.now()/1000) {
+          console.log("Token expired");
           await AsyncStorage.removeItem("token");
-          return
+          settoken(null);
+          setuser(null);
+        } else {
+          console.log("Token valid, setting state");
+          settoken(storedToken);
+          setuser(decoded);
+          goToHomePage();
+          // await connectSocket();
         }
-        settoken(storedToken)
-        setuser(decoded)
-        console.log("ok")
-      await connectSocket()
-
-        goToHomePage()
       } catch (error) {
-        goToWelcomePage();
-        console.log("failed to decode token")
+        console.log("Failed to decode token:", error);
+        await AsyncStorage.removeItem("token");
+        settoken(null);
+        setuser(null);
+        goToWelcomePage()
       }
-    }else{
-      goToWelcomePage();
-      console.log("noooo")
+    } else {
+      console.log("No token found");
+      settoken(null);
+      setuser(null);
+        goToWelcomePage()
+
     }
+  } catch (error) {
+    console.log("Error loading token:", error);
+    settoken(null);
+    setuser(null);
+        goToWelcomePage()
+
   }
+};
 
   const goToHomePage = () =>{
     setTimeout(() => { router.replace("/(main)/home") }, 1000)
@@ -77,6 +113,7 @@ useEffect(() => {
       await updateToken(response.token)
       await connectSocket()
       router.replace("/(main)/home")
+
     }
   }
 

@@ -4,15 +4,22 @@ import { colors } from '@/constants/theme'
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useEffect } from 'react';
 import { useRouter } from 'expo-router';
+import { useAuth } from '@/context/authContext';
 export default function SplachScreen() {
 const router = useRouter()
-
+const {token,user} = useAuth()
 useEffect(() => {
-  
-setTimeout(() => { 
-  router.push('/(auth)/welcome')
- }, 1500)
-}, [])
+  if (token && user) {
+    // Use requestAnimationFrame to delay navigation until after render
+    requestAnimationFrame(() => {
+      router.replace("/(main)/home");
+    });
+  } else {
+    requestAnimationFrame(() => {
+      router.replace("/(auth)/welcome");
+    });
+  }
+}, [token, user]);
 
 
 

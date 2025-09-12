@@ -6,7 +6,7 @@ import Button from '@/components/Button'
 import { useAuth } from '@/context/authContext'
 
 export default function home() {
-  const {signOut} = useAuth()
+  const {signOut,token} = useAuth()
   const handleLogout = async () => {
     await signOut()
   }
