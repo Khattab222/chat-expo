@@ -63,7 +63,7 @@ const loadToken = async () => {
           settoken(storedToken);
           setuser(decoded);
           goToHomePage();
-          // await connectSocket();
+          await connectSocket();
         }
       } catch (error) {
         console.log("Failed to decode token:", error);

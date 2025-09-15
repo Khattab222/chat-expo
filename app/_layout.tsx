@@ -5,12 +5,22 @@ import { AuthProvider } from '@/context/authContext'
 
  function StackLayout() {
   return (
-    <Stack screenOptions={{headerShown:false}}/>
+    <Stack screenOptions={{headerShown:false}}>
+      <Stack.Screen name="(modal)/ProfileNodal"  options={{
+          presentation: 'modal',
+        }} />
+        <Stack.Screen
+        name="modal"
+        options={{
+          presentation: 'modal',
+        }}
+      />
+    </Stack>
   )
 }
 export default function RootLayout() {
   return (
-    <AuthProvider>
+    <AuthProvider >
 
     <StackLayout/>
     </AuthProvider>
