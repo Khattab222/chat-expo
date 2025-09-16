@@ -42,9 +42,11 @@ const testSocketCallback = (data:any) => {
            
            </Typo>
       </View>
-      <TouchableOpacity style={styles.settingIcon} onPress={()=>{router.push("/modal/ProfileNodal")}}>
-        <Icon.GearSixIcon color={colors.white} weight='fill' size={verticalScale(22)}/>
-      </TouchableOpacity>
+    <TouchableOpacity 
+  style={styles.settingIcon} 
+  onPress={() => router.push("/(modal)/ProfileNodal")}>
+  <Icon.GearSixIcon color={colors.white} weight='fill' size={verticalScale(22)}/>
+</TouchableOpacity>
       </View>
       <View style={styles.content}>
         
