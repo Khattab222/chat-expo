@@ -15,7 +15,7 @@ export default function Button({
 
 if (loading) {
   return(
-    <View style={[styles.button, style,{backgroundColor:"trnsparent"}]}>
+    <View style={[styles.button, style,{backgroundColor:"transparent"}]}>
       <Loading/>
     </View>
   )
