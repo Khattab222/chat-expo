@@ -14,6 +14,8 @@ import { UserDataProps } from '@/types'
 import Button from '@/components/Button'
 import { useRouter } from 'expo-router'
 import { updateProfile } from '@/socket/socketEvent'
+import * as ImagePicker from 'expo-image-picker';
+
 
 
 const ProfileNodal = () => {
@@ -87,6 +89,19 @@ updateToken(res.data.token)
     updateProfile(data)
   }
 
+  const onpickImage =async()=>{
+       let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
+    });
+        console.log(result);
+      if (!result.canceled) {
+      setuserData({...userData,avatar:result.assets[0].uri});
+    }
+  }
+
   return (
     <ScreenWrapper style={{ justifyContent:"space-between",flex:1}} isModal={true}>
     <View style={styles.container}>
@@ -100,8 +115,8 @@ updateToken(res.data.token)
      {/* form */}
      <ScrollView contentContainerStyle={styles.form} showsVerticalScrollIndicator={false}>
      <View style={styles.avatarContainer}>
-      <Avatar uri={null} size={160}/>
-      <TouchableOpacity style={styles.editeIcon}>
+      <Avatar uri={userData.avatar} size={160}/>
+      <TouchableOpacity style={styles.editeIcon} onPress={onpickImage}>
       <Icon.PencilSimpleIcon
       size={verticalScale(20)}
       color={colors.neutral800}

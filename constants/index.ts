@@ -9,3 +9,5 @@ export const API_URL = Platform.select({
     android: "http://10.0.2.2:3000",
     default: "http://localhost:3000"
 }); 
+export const CLOUDINARY_CLOUD_NAME = "ddo7lxu3a"
+export const CLOUDINARY_UPLOAD_RESET = "chat-app"
