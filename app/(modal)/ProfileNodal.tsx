@@ -15,6 +15,7 @@ import Button from '@/components/Button'
 import { useRouter } from 'expo-router'
 import { updateProfile } from '@/socket/socketEvent'
 import * as ImagePicker from 'expo-image-picker';
+import { uploadFileCloudinary } from '@/services/imageServices'
 
 
 
@@ -72,19 +73,32 @@ updateToken(res.data.token)
     ])
   }
   
-  const onSubmit = ()=>{
+  const onSubmit =async ()=>{
     const {name,avatar} = userData;
     if (!name.trim()) {
       Alert.alert("User","please enter your name")
       return;
-    }else if (name.trim() ===user?.name.trim()){
-        Alert.alert("User","same name")
-      return;
     }
     // go
-    const data ={
+    let data ={
       name,avatar
     }
+
+  if ( avatar && avatar.uri ) {
+    console.log("yesss")
+    console.log("avatar",avatar)
+    setloading(true);
+    const res = await uploadFileCloudinary(avatar,"profiles");
+    console.log("cloudres:",res)
+    if (res.success) {
+      data.avatar = res.data
+    }else{
+      Alert.alert("User",res.msg);
+      setloading(false)
+      return
+    }
+  }
+
     setloading(true)
     updateProfile(data)
   }
@@ -92,13 +106,13 @@ updateToken(res.data.token)
   const onpickImage =async()=>{
        let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
-      allowsEditing: true,
+      // allowsEditing: true,
       aspect: [4, 3],
       quality: 0.5,
     });
-        console.log(result);
+
       if (!result.canceled) {
-      setuserData({...userData,avatar:result.assets[0].uri});
+      setuserData({...userData,avatar:result.assets[0]});
     }
   }
 

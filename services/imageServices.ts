@@ -8,7 +8,7 @@ const IMAGE_API_REL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/
 export const uploadFileCloudinary = async (
   file:{uri:string} | string,
   folderName:string
-):Promise<ResponseProps>{
+):Promise<ResponseProps>=>{
 
 try {
   if(!file)return {success:true,data:null};
@@ -30,8 +30,12 @@ try {
           "Content-Type":"multipart/form-data"
         }
       })
+      return {success:true,data:response?.data?.secure_url}
       
   }
+     
+  return {success:true,data:null}
+
 } catch (error:any) {
   console.log("gor error on upload:",error);
   return {success:false,msg:error.message || "couldn't upload image"}
